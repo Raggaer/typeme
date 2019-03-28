@@ -10,6 +10,13 @@ var (
 	style = tcell.StyleDefault
 )
 
+func fillRow(screen tcell.Screen, row int, content string) {
+	width := maxWordsWidth(screen)
+	for i := 0; i <= width+1; i++ {
+		screen.SetContent(i, row, rune(content[0]), []rune{}, style)
+	}
+}
+
 func clearRow(screen tcell.Screen, row int) {
 	width, _ := screen.Size()
 	for i := 0; i <= width; i++ {

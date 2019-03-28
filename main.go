@@ -71,13 +71,13 @@ func handleInput(screen tcell.Screen, quit chan struct{}) {
 					go handleGameScore(screen, gameRows)
 					go handleGameOver(screen)
 				} else {
-					clearRow(screen, 13)
+					clearRow(screen, gameRows+3)
 					handleWordInput(screen, currentInput)
 					currentInput = ""
 				}
 			case tcell.KeyBackspace, tcell.KeyBackspace2:
 				if len(currentInput) > 0 {
-					clearRow(screen, 13)
+					clearRow(screen, gameRows+3)
 					currentInput = currentInput[0 : len(currentInput)-1]
 				}
 			case tcell.KeyEscape:
@@ -112,7 +112,7 @@ func handleGameOver(screen tcell.Screen) {
 func handleGameInput(screen tcell.Screen, max int) {
 	for {
 		if gameIsAlive {
-			writexy(screen, 1, max+3, fmt.Sprintf("Input: %s", currentInput))
+			writexy(screen, 0, max+3, fmt.Sprintf("INPUT: %s", currentInput))
 		}
 		time.Sleep(time.Millisecond * 100)
 	}
@@ -121,7 +121,7 @@ func handleGameInput(screen tcell.Screen, max int) {
 func handleGameScore(screen tcell.Screen, max int) {
 	for {
 		if gameIsAlive {
-			writexy(screen, 1, max+5, fmt.Sprintf("Game Score: %d", gamePoints))
+			writexy(screen, 0, max+2, fmt.Sprintf("SCORE: %d", gamePoints))
 		}
 		time.Sleep(time.Duration(speed))
 

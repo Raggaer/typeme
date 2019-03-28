@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"math/rand"
 	"os"
 	"sync"
@@ -79,20 +78,14 @@ func loadWords(path string) ([]string, error) {
 func startWordColumns(screen tcell.Screen, n int) {
 	width := maxWordsWidth(screen)
 	go handleColumnsSpeed(screen)
-	go renderColumnsSpeed(screen, n)
 	for i := 0; i < n; i++ {
 		columnsLocks[i] = &sync.Mutex{}
 		writexy(screen, width+2, i, "|")
 		go executeColumn(screen, i)
-	}
-}
-
-func renderColumnsSpeed(screen tcell.Screen, max int) {
-	for {
-		if gameIsAlive {
-			writexy(screen, 1, max+4, fmt.Sprintf("Game Speed: %d", speed))
+		if i == n-1 {
+			writexy(screen, width+2, i+1, "-")
+			fillRow(screen, i+1, "-")
 		}
-		time.Sleep(time.Second * 2)
 	}
 }
 
