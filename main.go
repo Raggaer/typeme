@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	gameIsAlive  = true
 	gameStatus   = 0
 	gamePoints   = 0
 	gameRows     = 10
@@ -60,6 +61,7 @@ func handleInput(screen tcell.Screen, quit chan struct{}) {
 			switch ev.Key() {
 			case tcell.KeyEnter:
 				if gameStatus == 0 {
+					gameIsAlive = true
 					gameStatus = 1
 					row = 0
 					screen.Clear()
@@ -67,6 +69,7 @@ func handleInput(screen tcell.Screen, quit chan struct{}) {
 					go startWordColumns(screen, gameRows)
 					go handleGameInput(screen, gameRows)
 					go handleGameScore(screen, gameRows)
+					go handleGameOver(screen)
 				} else {
 					clearRow(screen, 13)
 					handleWordInput(screen, currentInput)
@@ -91,16 +94,36 @@ func handleInput(screen tcell.Screen, quit chan struct{}) {
 	}
 }
 
+func handleGameOver(screen tcell.Screen) {
+	for {
+		if !gameIsAlive {
+			gameStatus = 0
+			screen.Clear()
+			screen.Sync()
+			writeln(screen, fmt.Sprintf("Game Over!. You achieved an score of %d. Press Enter to try again", gamePoints))
+			gamePoints = 0
+			speed = int(time.Second)
+			return
+		}
+		time.Sleep(time.Duration(speed))
+	}
+}
+
 func handleGameInput(screen tcell.Screen, max int) {
 	for {
-		writexy(screen, 1, max+3, fmt.Sprintf("Input: %s", currentInput))
+		if gameIsAlive {
+			writexy(screen, 1, max+3, fmt.Sprintf("Input: %s", currentInput))
+		}
 		time.Sleep(time.Millisecond * 100)
 	}
 }
 
 func handleGameScore(screen tcell.Screen, max int) {
 	for {
-		writexy(screen, 1, max+5, fmt.Sprintf("Game Score: %d", gamePoints))
+		if gameIsAlive {
+			writexy(screen, 1, max+5, fmt.Sprintf("Game Score: %d", gamePoints))
+		}
 		time.Sleep(time.Duration(speed))
+
 	}
 }

@@ -89,7 +89,9 @@ func startWordColumns(screen tcell.Screen, n int) {
 
 func renderColumnsSpeed(screen tcell.Screen, max int) {
 	for {
-		writexy(screen, 1, max+4, fmt.Sprintf("Game Speed: %d", speed))
+		if gameIsAlive {
+			writexy(screen, 1, max+4, fmt.Sprintf("Game Speed: %d", speed))
+		}
 		time.Sleep(time.Second * 2)
 	}
 }
@@ -120,11 +122,13 @@ func spaceForWord(screen tcell.Screen, row, needed int) bool {
 func executeColumn(screen tcell.Screen, row int) {
 	for {
 		time.Sleep(time.Duration(speed))
-		columnsLocks[row].Lock()
-		moverow(screen, row)
-		handleColumnNewWords(screen, row)
-		columnsLocks[row].Unlock()
-		screen.Show()
+		if gameIsAlive {
+			columnsLocks[row].Lock()
+			moverow(screen, row)
+			handleColumnNewWords(screen, row)
+			columnsLocks[row].Unlock()
+			screen.Show()
+		}
 	}
 }
 

@@ -26,6 +26,8 @@ func moverow(screen tcell.Screen, row int) {
 		if i > 0 {
 			if i == width && mainc != 32 {
 				// At this point the game is lost
+				gameIsAlive = false
+				return
 			}
 			screen.SetContent(i, row, future_mainc, []rune{}, future_st)
 		} else {
