@@ -8,7 +8,7 @@ leaving it
 ## About
 
 This was made over the course of two days so the code is a little bit ugly (but hey! it works).
-I mainly wanted any idea to use the (https://github.com/gdamore/tcell)[https://github.com/gdamore/tcell] library
+I mainly wanted any idea to use the [https://github.com/gdamore/tcell](https://github.com/gdamore/tcell) library
 
 Basically words will appear between the first 10 rows of your terminal and they will slowly start to go towards the end of the screen.
 You need to type each word before they arrive to the end (this ia a game over), also the speed of the rows increase along the game length
